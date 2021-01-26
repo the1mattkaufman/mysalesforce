@@ -36,7 +36,7 @@ jobs:
         run: npm ci
 
         # LWC unit tests
-      - name: "Unit test Lightning Web Components"
+      - name: "Salesforce Unit test"
         run: npm run test:unit:coverage
 
       # Upload code coverage data
