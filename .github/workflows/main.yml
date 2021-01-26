@@ -23,8 +23,7 @@ jobs:
           mkdir sfdx-cli
           tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
           ./sfdx-cli/install
-
-      # Checkout the source code
+      # Checkout the code in the pull request
       - name: "Checkout source code"
         uses: actions/checkout@v2
 
@@ -35,7 +34,11 @@ jobs:
 
       # Authenticate dev hub
       - name: "Authenticate Dev Hub"
-        run: "sfdx auth:sfdxurl:store -f ./DEVHUB_SFDX_URL.txt -a devhub -d"
+        run: "sfdx force:auth:sfdxurl:store -f ./DEVHUB_SFDX_URL.txt -a devhub -d"
+
+      # Lint Aura components
+      - name: "Lint Aura components"
+        run: "sfdx force:lightning:lint . --exit"
 
       # Create scratch org
       - name: "Create scratch org"
@@ -53,7 +56,7 @@ jobs:
       - name: "Upload code coverage for Apex to Codecov.io"
         uses: codecov/codecov-action@v1
         with:
-          flags: Apex
+          flag: Apex
 
       # Housekeeping
       - name: "Delete scratch org"
